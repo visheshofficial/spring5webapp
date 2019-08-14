@@ -4,13 +4,16 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Book {
@@ -21,7 +24,9 @@ public class Book {
 
     private String title;
     private String isbn;
-    private String publisher;
+
+    @OneToOne
+    private Publisher publisher;
 
     @ManyToMany
     @JoinTable(name = "author_books",joinColumns = @JoinColumn(name = "book_id"),inverseJoinColumns = @JoinColumn(name = "author_id"))
@@ -30,7 +35,8 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String title, String isbn, String publisher) {
+
+    public Book(String title, String isbn, Publisher publisher) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;
@@ -38,7 +44,7 @@ public class Book {
     }
 
 
-    public Book(Long id, String title, String isbn, String publisher, Set<Author> authors) {
+    public Book( String title, String isbn, Publisher publisher, Set<Author> authors) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;
@@ -71,11 +77,11 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public String getPublisher() {
+    public Publisher getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(String publisher) {
+    public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
 
